@@ -1,46 +1,40 @@
 import axios from 'axios'
 
-const baseUrl = 'https://swapi.dev/api/people/';
+// const baseUrl = 'https://swapi.dev/api/people/';
+
+const baseUrl = (process.env.NODE_ENV !== 'development') ?
+    '/api/person' :
+    '//localhost:5000/api/person';
+
+
 const persons_key = 'persons';
 var personsWithId = JSON.parse(localStorage.getItem(persons_key));
 
-
 async function getPersons(filterBy = null) {
-    var personsToReturn = [];
-    if (localStorage.getItem(persons_key)) {
-        personsToReturn = JSON.parse(localStorage.getItem(persons_key))
-    } else {
-        personsToReturn = await axios.get(`${baseUrl}`)
-            .then(res => {
-                return res.data.results;
-            })
-        personsToReturn = personsToReturn.map(person => {
-            person.id = _makeId();
-            return person
+    let personsToReturn = await axios.get(`${baseUrl}`)
+        .then(res => {
+            return res.data
         })
-        localStorage.setItem(persons_key, JSON.stringify(personsToReturn));
-    }
-
     if (filterBy && filterBy.term) {
         personsToReturn = _filter(filterBy.term, personsToReturn)
     }
-    personsWithId = JSON.parse(JSON.stringify(personsToReturn));
     return personsToReturn
 }
 
 async function getPerson(id) {
-    const currPerson = await personsWithId.filter(person => {
-        return (person.id === id)
-    })
-    return currPerson[0];
+    const currPerson = await axios.get(`${baseUrl}/${id}`)
+        .then(res => {
+            return res.data
+        })
+    return currPerson;
 }
 
 async function removePerson(idToRemove) {
     try {
-        let persons = personsWithId;
-        const idx = persons.findIndex(person => person.id === idToRemove)
-        persons.splice(idx, 1)
-        localStorage.setItem(persons_key, JSON.stringify(persons));
+        const idx = await axios.delete(`${baseUrl}/${idToRemove}`)
+            .then(res => {
+                return res.data
+            });
         return idx;
     } catch (err) {
         console.log(`ERROR: cannot remove person ${idToRemove}`);
@@ -52,23 +46,19 @@ async function savePerson(personToAdd) {
     return personToAdd.id ? _updatePerson(personToAdd) : _addPerson(personToAdd)
 }
 
-function _addPerson(personToAdd) {
-    personToAdd.id = _makeId();
-    personToAdd.created = Date.now();
-    let persons = personsWithId;
-    persons.push(personToAdd);
-    localStorage.setItem(persons_key, JSON.stringify(persons));
-    return personToAdd;
+async function _addPerson(personToAdd) {
+    const person = await axios.post(`${baseUrl}`, personToAdd)
+        .then(res => {
+            return res.data
+        });
+    return person;
 }
-function _updatePerson(personToupdate) {
-    personToupdate.edited = Date.now();
-    let persons = personsWithId;
-    const idx = persons.findIndex(person => person.id === personToupdate.id)
-    if (idx !== -1) {
-        persons[idx] = personToupdate
-    }
-    localStorage.setItem(persons_key, JSON.stringify(persons));
-    return personToupdate;
+async function _updatePerson(personToupdate) {
+    const person = await axios.put(`${baseUrl}/${personToupdate.id}`, personToupdate)
+        .then(res => {
+            return res.data
+        });
+    return person;
 }
 function _filter(term, personsToFilter) {
     term = term.toLocaleLowerCase()

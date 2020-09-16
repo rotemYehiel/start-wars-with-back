@@ -6,7 +6,7 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 
-// const booksRoutes = require('./api/book/book.routes')
+const personsRoutes = require('./api/person/person.routes')
 
 
 app.use(express.json());
@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // routes
-// app.use('/api/books', booksRoutes)
+app.use('/api/person', personsRoutes)
 
 
 const port = process.env.PORT || 5000;
