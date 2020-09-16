@@ -1,0 +1,21 @@
+// .content-container {
+//     margin: 0 auto;
+//     width: calc(100% - 30px);
+//     max-width: $break-wide;
+//     flex: 1;
+//     @include for-narrow-layout {
+//         max-width: $break-narrow;
+//     }
+//     @include for-normal-layout {
+//         max-width: $break-normal;
+//     }
+//     @include for-wide-layout {
+//         max-width: $break-wide;
+//     }
+// }
+.main-layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

@@ -1,0 +1,33 @@
+/* SETUP*/
+
+@import './styles/setup/_typography';
+@import './styles/setup/variables';
+@import './styles/setup/mixins';
+// @import 'setup/functions';
+
+/* BASICS*/
+
+// @import 'basics/helpers';
+@import './styles/basics/base';
+@import './styles/basics/layout';
+
+/* PAGES */
+
+@import './styles/pages/_PersonList.scss';
+@import './styles/pages/_PersonDetails.scss';
+@import './styles/pages/_PersonEdit.scss';
+
+/* CMPS */
+
+
+/* DEFAULTS */
+
+///////////////////
+body {
+    margin: 0;
+    background-color: $clr5;
+    // font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    // font-family: Courgette-Regular;
+}

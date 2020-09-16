@@ -1,0 +1,24 @@
+.person-details {
+    h2 {
+        margin: 0.25rem 0rem;
+    }
+    .person-img {
+        border-radius: 50%;
+        background-color: white;
+        margin: 0.5rem 0rem;
+    }
+    ul {
+        display: flex;
+        flex-direction: column;
+        @include clean-list;
+        margin: 0.25rem 0rem;
+    }
+    .details-sec {
+        display: flex;
+        flex-direction: column;
+        text-align: start;
+        .description {
+            text-decoration: underline;
+        }
+    }
+}
